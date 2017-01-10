@@ -10,25 +10,29 @@ export default class Contact extends React.Component {
     this.state = {
       keyword : '',
       selectedKey : -1,
-      contactData: [{
-        name: 'AAA',
-        phone: '010-1111-1111'
-      }, {
-        name: 'BBB',
-        phone: '010-1111-1222'
-      }, {
-        name: 'CCC',
-        phone: '010-1111-1333'
-      }, {
-        name: 'DDD',
-        phone: '010-1111-1444'
-      }]
+      contactData: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  componentWillMount() {
+    const contactData = localStorage.contactData;
+
+    if(contactData){
+      this.setState({
+        contactData : JSON.parse(contactData)
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(JSON.stringify(prevState) != JSON.stringify(this.state.contactData)){
+      localStorage.contactData = JSON.stringify(this.state.contactData);
+    }
   }
 
   handleChange(e){
@@ -49,6 +53,7 @@ export default class Contact extends React.Component {
         contactData : update(this.state.contactData, {$push : [contact]})
       }
     );
+
   }
 
   handleRemove(){

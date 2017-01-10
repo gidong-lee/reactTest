@@ -15,6 +15,7 @@ export default class ContactCreate extends React.Component {
 	handleChange(e){
 		let nextState = {};
 		nextState[e.target.name] = e.target.value;
+		console.log("e.target.name : ",  e.target.name);
 		this.setState(nextState);
 	};
 
@@ -29,6 +30,7 @@ export default class ContactCreate extends React.Component {
 			name : '',
 			phone : ''
 		});
+		this.nameInput.focus();
 	};
 
 	handleKeyPress(e){
@@ -48,6 +50,7 @@ export default class ContactCreate extends React.Component {
 						placeholder="name"
 						value={this.state.name}
 						onChange={this.handleChange}
+						ref={(input) => {this.nameInput = input; }}
 					/>
 					<input 
 						type="text"
