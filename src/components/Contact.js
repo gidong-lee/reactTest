@@ -100,8 +100,8 @@ export default class Contact extends React.Component {
 
     return (
       <div>
-        <h1>Contacts</h1>
-        <input name="keyword" placeholder='Search' value={this.state.keyword} onChange={this.handleChange} />
+        <h1>Contacts List</h1>
+        <input name="keyword" placeholder='Search 이름' value={this.state.keyword} onChange={this.handleChange} />
         <div>{mapToComponent(this.state.contactData)}</div>
         <ContactDetails 
           isSelected={this.state.selectedKey != -1}
