@@ -19,14 +19,14 @@ export default class Contact extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
   }
 
-  componentWillMount() {
-    const contactData = localStorage.contactData;
+  componentDidMount() {
+    fetch("/jsonList.json")
+        .then( (response) => {
+            return response.json() })
+                .then( (json) => {
+                  this.setState({ contactData: json.contactData});
+                });
 
-    if(contactData){
-      this.setState({
-        contactData : JSON.parse(contactData)
-      });
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -57,13 +57,13 @@ export default class Contact extends React.Component {
   }
 
   handleRemove(){
-    if(this.state.selectedKey < 0) { 
+    if(this.state.selectedKey < 0) {
       return;
     }
 
     this.setState({
       contactData : update(
-        this.state.contactData, 
+        this.state.contactData,
           { $splice : [[this.state.selectedKey, 1]]}
         ),
         selectedKey : -1
@@ -71,7 +71,7 @@ export default class Contact extends React.Component {
   }
 
   handleEdit(name, phone){
-    if(this.state.selectedKey < 0) { 
+    if(this.state.selectedKey < 0) {
       return;
     }
     this.setState({
@@ -103,7 +103,7 @@ export default class Contact extends React.Component {
         <h1>Contacts List</h1>
         <input name="keyword" placeholder='Search 이름' value={this.state.keyword} onChange={this.handleChange} />
         <div>{mapToComponent(this.state.contactData)}</div>
-        <ContactDetails 
+        <ContactDetails
           isSelected={this.state.selectedKey != -1}
           contact={this.state.contactData[this.state.selectedKey]}
           onRemove={this.handleRemove}
